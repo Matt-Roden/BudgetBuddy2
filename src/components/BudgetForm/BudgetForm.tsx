@@ -170,6 +170,7 @@ const BudgetForm = () => {
                     placeholder="Amount"
                     id="expense-amount"
                     type="number"
+                    min={0}
                     value={expense.amount}
                     onChange={(e) => {
                       handleExpenseAmountChange(e, expense);
