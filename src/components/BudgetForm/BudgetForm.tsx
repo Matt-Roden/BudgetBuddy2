@@ -20,6 +20,7 @@ const expenseTypes = [
   "Utilities",
   "Rent/Mortgage",
   "Transportation",
+  "Gas/Fuel",
   "Dining Out",
   "Entertainment",
   "Health Care",
@@ -59,7 +60,9 @@ const BudgetForm = () => {
       return accum;
     }, 0);
 
-    return setTotalSavings(Number(income) - expensesTotal);
+    const totalSavings = Number(income) - Number(expensesTotal.toFixed(2));
+
+    return setTotalSavings(totalSavings);
   };
 
   const handleAddExpense = (e: React.MouseEvent<HTMLButtonElement>) => {
