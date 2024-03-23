@@ -14,9 +14,39 @@ type Budget = {
   expenses: Expense[];
 };
 
+const expenseTypes = [
+  "Groceries",
+  "Utilities",
+  "Rent/Mortgage",
+  "Transportation",
+  "Dining Out",
+  "Entertainment",
+  "Health Care",
+  "Insurance",
+  "Clothing",
+  "Education",
+  "Gifts/Donations",
+  "Travel",
+  "Home Maintenance",
+  "Electronics",
+  "Personal Care",
+  "Pet Care",
+  "Childcare",
+  "Taxes",
+  "Subscriptions",
+  "Savings/Investments",
+  "Debt Repayment",
+  "Furniture/Household Items",
+  "Hobbies",
+  "Fitness/Sports",
+  "Miscellaneous",
+  "Other",
+];
+
 const BudgetForm = () => {
   const [budgetName, setBudgetName] = useState<string>("");
   const [income, setIncome] = useState<number>(0);
+  const [selectedExpenseType] = useState<string | undefined>(undefined);
   const [expenses, setExpenses] = useState<Expense[]>([
     { amount: "", type: "", id: uuidv4() },
   ]);
@@ -58,8 +88,9 @@ const BudgetForm = () => {
     });
     setExpenses(updatedExpenses);
   };
+
   const handleExpenseTypeChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLSelectElement>,
     expense: Expense
   ) => {
     const updatedExpenses: React.SetStateAction<Expense[]> = [];
@@ -126,23 +157,41 @@ const BudgetForm = () => {
           {expenses.map((expense) => {
             return (
               <div key={expense.id}>
-                <label htmlFor="expense-type">Expense Type</label>
-                <input
-                  id="expense-type"
-                  value={expense.type}
-                  onChange={(e) => handleExpenseTypeChange(e, expense)}
-                />
-                <label htmlFor="expense-amount">Amount</label>
-                <input
-                  id="expense-amount"
-                  type="number"
-                  value={expense.amount}
-                  onChange={(e) => {
-                    handleExpenseAmountChange(e, expense);
-                  }}
-                />
+                <div>
+                  <label htmlFor="expense-amount">Amount</label>
+                  <input
+                    id="expense-amount"
+                    type="number"
+                    value={expense.amount}
+                    onChange={(e) => {
+                      handleExpenseAmountChange(e, expense);
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="dropdown">Expense Type:</label>
+                  <select
+                    id="dropdown"
+                    value={selectedExpenseType}
+                    onChange={(e) => handleExpenseTypeChange(e, expense)}
+                  >
+                    <option value="">Select an option</option>
+                    {expenseTypes.map((expenseType, index) => (
+                      <option key={index} value={expenseType}>
+                        {expenseType}
+                      </option>
+                    ))}
+                  </select>
+                  {selectedExpenseType && (
+                    <p>You selected: {selectedExpenseType}</p>
+                  )}
+                </div>
                 <button
-                  disabled={expenses.length <= 1}
+                  disabled={
+                    expenses.length <= 1 &&
+                    expenses.filter((item) => !item.amount || !item.type)
+                      .length <= 1
+                  }
                   onClick={() => {
                     removeExpense(expense.id);
                   }}
