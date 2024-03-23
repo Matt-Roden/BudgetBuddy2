@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import "./BudgetForm.css";
 
 type Expense = {
   amount: string;
@@ -45,7 +46,7 @@ const expenseTypes = [
 
 const BudgetForm = () => {
   const [budgetName, setBudgetName] = useState<string>("");
-  const [income, setIncome] = useState<number>(0);
+  const [income, setIncome] = useState<string>("");
   const [selectedExpenseType] = useState<string | undefined>(undefined);
   const [expenses, setExpenses] = useState<Expense[]>([
     { amount: "", type: "", id: uuidv4() },
@@ -58,7 +59,7 @@ const BudgetForm = () => {
       return accum;
     }, 0);
 
-    return setTotalSavings(income - expensesTotal);
+    return setTotalSavings(Number(income) - expensesTotal);
   };
 
   const handleAddExpense = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -109,7 +110,7 @@ const BudgetForm = () => {
     e.preventDefault();
     const budget: Budget = {
       name: budgetName,
-      income,
+      income: Number(income),
       expenses: expenses.filter((item) => item.amount),
       totalSavings,
     };
@@ -123,43 +124,47 @@ const BudgetForm = () => {
   }, [expenses, income]);
 
   return (
-    <div>
+    <div className="create-budget-container">
       <h3>Create New Budget</h3>
-      <form onSubmit={(e) => handleSaveBudget(e)}>
-        <div>
-          <label htmlFor="budget-name">Budget Name *</label>
-          <input
-            id="budget-name"
-            value={budgetName}
-            onChange={(e) => setBudgetName(e.target.value)}
-          />
+      <form className="budget-form" onSubmit={(e) => handleSaveBudget(e)}>
+        <div className="name-and-income-row">
+          <div className="label-and-field-container">
+            <label htmlFor="budget-name">Budget Name *</label>
+            <input
+              className="text-input"
+              id="budget-name"
+              value={budgetName}
+              onChange={(e) => setBudgetName(e.target.value)}
+            />
+          </div>
+          <div className="label-and-field-container">
+            <label htmlFor="income-amount-field'">Income *</label>
+            <input
+              className="text-input"
+              id="income-amount-field"
+              value={income}
+              onChange={(e) => {
+                setIncome(e.target.value);
+              }}
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="income-amount-field'">Income *</label>
-          <input
-            id="income-amount-field"
-            value={income}
-            onChange={(e) => {
-              setIncome(Number(e.target.value));
-            }}
-          />
-        </div>
-        <div>
-          <button
-            onClick={(e) => {
-              handleAddExpense(e);
-            }}
-          >
-            Add Expense
-          </button>
-        </div>
-        <div>
+        <button
+          className="add-expense-button"
+          onClick={(e) => {
+            handleAddExpense(e);
+          }}
+        >
+          Add Expense
+        </button>
+        <div className="expenses-container">
           {expenses.map((expense) => {
             return (
-              <div key={expense.id}>
+              <div key={expense.id} className="expense-row">
                 <div>
-                  <label htmlFor="expense-amount">Amount</label>
                   <input
+                    className="text-input"
+                    placeholder="Amount"
                     id="expense-amount"
                     type="number"
                     value={expense.amount}
@@ -169,13 +174,13 @@ const BudgetForm = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="dropdown">Expense Type:</label>
                   <select
+                    className="text-input"
                     id="dropdown"
                     value={selectedExpenseType}
                     onChange={(e) => handleExpenseTypeChange(e, expense)}
                   >
-                    <option value="">Select an option</option>
+                    <option value="">Select a category</option>
                     {expenseTypes.map((expenseType, index) => (
                       <option key={index} value={expenseType}>
                         {expenseType}
@@ -202,7 +207,7 @@ const BudgetForm = () => {
             );
           })}
         </div>
-        <div>
+        <div className="total-and-save-row">
           <div>Total Savings: ${totalSavings}</div>
           {/* Todo: on save will POST this budget to an API*/}
           <button
