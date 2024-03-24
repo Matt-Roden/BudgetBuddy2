@@ -1,15 +1,30 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import BudgetForm from "./components/BudgetForm/BudgetForm";
-// import BudgetsDisplay from "./components/BudgetsDisplay";
+import BudgetForm from "./routes/BudgetForm/BudgetForm";
+import BudgetsDisplay from "./routes/BudgetsDisplay";
+import HomePage from "./routes/HomePage/HomePage";
 
-function App() {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "/create-budget",
+    element: <BudgetForm />,
+  },
+  {
+    path: "/budgets",
+    element: <BudgetsDisplay />,
+  },
+]);
 
+const App = () => {
   return (
     <>
-      <BudgetForm />
-      {/* <BudgetsDisplay /> */}
+      <RouterProvider router={router} />
     </>
   );
-}
+};
 
 export default App;
