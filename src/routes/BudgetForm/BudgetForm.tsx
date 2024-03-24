@@ -42,6 +42,7 @@ const expenseTypes = [
   "Furniture/Household Items",
   "Hobbies",
   "Fitness/Sports",
+  "Student Loan",
   "Miscellaneous",
   "Other",
 ];
@@ -130,9 +131,13 @@ const BudgetForm = () => {
   return (
     <>
       <Navbar />
-      <div className="create-budget-container">
-        <h3>Create New Budget</h3>
+      <div>
         <form className="budget-form" onSubmit={(e) => handleSaveBudget(e)}>
+          <h3>Create New Budget</h3>
+          <p className="subtext">
+            Enter your total monthly income, categorize and add expenses, and
+            calculate your total savings
+          </p>
           <div className="name-and-income-row">
             <div className="label-and-field-container">
               <label htmlFor="budget-name">Budget Name *</label>
