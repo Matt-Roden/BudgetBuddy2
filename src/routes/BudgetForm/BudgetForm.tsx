@@ -216,7 +216,16 @@ const BudgetForm = () => {
             })}
           </div>
           <div className="total-and-save-row">
-            <div>Total Savings: ${totalSavings}</div>
+            <div className="total-savings">
+              <div>Total Savings:</div>
+              <div
+                className={
+                  totalSavings < 0 ? "total-negative" : "total-positive"
+                }
+              >
+                ${totalSavings}
+              </div>
+            </div>
             {/* Todo: on save will POST this budget to an API*/}
             <button
               type="submit"

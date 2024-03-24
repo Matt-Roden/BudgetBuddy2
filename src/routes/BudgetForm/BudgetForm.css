@@ -54,3 +54,17 @@
   flex-direction: column;
   align-items: flex-start;
 }
+
+.total-savings {
+  display: flex;
+}
+
+.total-positive {
+  color: green;
+  margin-left: 6px;
+}
+
+.total-negative {
+  color: red;
+  margin-left: 6px;
+}
