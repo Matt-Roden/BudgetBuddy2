@@ -3,6 +3,7 @@ import "./App.css";
 import BudgetForm from "./routes/BudgetForm/BudgetForm";
 import BudgetsDisplay from "./routes/BudgetsDisplay";
 import HomePage from "./routes/HomePage/HomePage";
+import SingleBudgetDetails from "./routes/SingleBudgetDetails";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/budgets",
     element: <BudgetsDisplay />,
+  },
+  {
+    path: "/budget/:id",
+    element: <SingleBudgetDetails />,
   },
 ]);
 

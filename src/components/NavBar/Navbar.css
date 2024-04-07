@@ -1,9 +1,13 @@
 .nav-bar {
-  min-width: 100vw;
+  /* min-width: 100%; */
   position: fixed;
   top: 0;
   left: 0;
   padding: 10px 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
+}
+
+.navitem {
+  margin: 0 10px
 }

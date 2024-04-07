@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./BudgetForm.css";
 import Navbar from "../../components/NavBar/Navbar";
+import { budgets } from "../../data/budgets";
 
 type Expense = {
   amount: string;
@@ -10,6 +11,7 @@ type Expense = {
 };
 
 type Budget = {
+  id: string;
   name: string;
   totalSavings: number;
   income: number;
@@ -111,15 +113,25 @@ const BudgetForm = () => {
     setExpenses(updatedExpenses);
   };
 
+  const resetForm = () => {
+    setBudgetName('')
+    setExpenses([
+      { amount: "", type: "", id: uuidv4() },
+    ])
+    setIncome("")
+  }
+
   const handleSaveBudget = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const budget: Budget = {
+      id: uuidv4(),
       name: budgetName,
       income: Number(income),
       expenses: expenses.filter((item) => item.amount),
       totalSavings,
     };
-
+    budgets.push(budget)
+    resetForm()
     console.log(budget);
   };
 
@@ -244,6 +256,10 @@ const BudgetForm = () => {
             </button>
           </div>
         </form>
+        {/* test for switching to new :id route */}
+        {/* <Link to={`/budget/${uuidv4()}`}>
+          <button>Link to thing</button>
+        </Link> */}
       </div>
     </>
   );
