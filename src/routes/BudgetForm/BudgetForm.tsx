@@ -114,14 +114,12 @@ const BudgetForm = () => {
   };
 
   const resetForm = () => {
-    setBudgetName('')
-    setExpenses([
-      { amount: "", type: "", id: uuidv4() },
-    ])
-    setIncome("")
-  }
+    setBudgetName("");
+    setExpenses([{ amount: "", type: "", id: uuidv4() }]);
+    setIncome("");
+  };
 
-  const handleSaveBudget = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSaveBudget = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const budget: Budget = {
       id: uuidv4(),
@@ -129,10 +127,27 @@ const BudgetForm = () => {
       income: Number(income),
       expenses: expenses.filter((item) => item.amount),
       totalSavings,
-    };
-    budgets.push(budget)
-    resetForm()
-    console.log(budget);
+    }; 
+    try {
+      const response = await fetch("http://localhost:3000/budgets", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(budget),
+      });
+      const data = await response.json();
+      if (data) {
+        resetForm()
+      }
+      budgets.push(data)
+      console.log(data)
+    } catch (error) {
+      console.log(error);
+    }
+
+    
   };
 
   useEffect(() => {
@@ -256,10 +271,6 @@ const BudgetForm = () => {
             </button>
           </div>
         </form>
-        {/* test for switching to new :id route */}
-        {/* <Link to={`/budget/${uuidv4()}`}>
-          <button>Link to thing</button>
-        </Link> */}
       </div>
     </>
   );
